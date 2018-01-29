@@ -36,12 +36,13 @@ def view_registration_form():
 def register_guest():
     name = request.form.get('name')
     email = request.form.get('email')
+    partysize = request.form.get('partysize')
+    if not partysize or partysize=='':
+        partysize = 1
 
-    guest = Guest(name, email)
+    guest = Guest(name, email, partysize)
     DB.session.add(guest)
     DB.session.commit()
 
     return render_template('guest_confirmation.html',
-        name=name, email=email)
-    
-
+        name=name, email=email, partysize=partysize)

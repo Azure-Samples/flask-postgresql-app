@@ -10,6 +10,7 @@
   <tr>
     <th>Name</th>
     <th>Email</th>
+    <th>Attendees</th>
   </tr>
   </thead>
   <tbody>
@@ -17,6 +18,7 @@
     <tr>
     <td>{{ guest.name }}</td>
     <td>{{ guest.email }}</td>
+    <td>{% if guest.partysize %}{{ guest.partysize }}{% else %}1{% endif %}</td>
     </tr>
   {% endfor %}
 </table>
