@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Registered Guests{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Registered Guests</h1>
+  <table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for guest in guests %}
+    <tr>
+    <td>{{ guest.name }}</td>
+    <td>{{ guest.email }}</td>
+    </tr>
+  {% endfor %}
+</table>
+<p class="navbar-btn">
+  <a href="/register" class="btn btn-default">Register!</a>
+</p>
+{% endblock %}

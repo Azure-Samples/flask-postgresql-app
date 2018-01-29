@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Guest Registration{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Guest Registration</h1>
+  <form action="/register" method="POST">
+    <div class="form-group">
+    <label for="namefield">Name</label>
+    <input type="text" class="form-control" id="namefield" name="name" aria-describedby="emailHelp" placeholder="Email">
+    <small id="emailHelp" class="form-text text-muted">Let us know who you are.</small>
+  </div>
+  <div class="form-group">
+    <label for="emailfield">Email address</label>
+    <input type="email" class="form-control" id="emailfield" name="email" aria-describedby="emailHelp" placeholder="Email">
+    <small id="emailHelp" class="form-text text-muted">Your email address in case we need to contact you.</small>
+  </div>
+  <button type="submit" class="btn btn-default">Register</button>
+  </form>
+{% endblock %}
