@@ -1,16 +1,16 @@
-from app import DB
+from app import db
 
-class Guest(DB.Model):
+
+class Guest(db.Model):
     """Simple database model to track event attendees."""
-    
+
     __tablename__ = 'guests'
-    id = DB.Column(DB.Integer, primary_key=True)
-    name = DB.Column(DB.String(80))
-    email = DB.Column(DB.String(120))
-    partysize = DB.Column(DB.Integer, default=1)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    email = db.Column(db.String(120))
+    partysize = db.Column(db.Integer, default=1)
 
     def __init__(self, name=None, email=None, partysize=1):
         self.name = name
         self.email = email
-        self.partysize = partysize
-    
+        self.partysize = partysize or 1

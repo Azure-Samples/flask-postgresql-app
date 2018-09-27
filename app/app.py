@@ -1,48 +1,52 @@
 import os
 
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-APP = Flask(__name__)
-APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://%s:%s@%s/%s' % (
-    # ARGS.dbuser, ARGS.dbpass, ARGS.dbhost, ARGS.dbname
-    os.environ['DBUSER'], os.environ['DBPASS'], os.environ['DBHOST'], os.environ['DBNAME']
+database_uri = 'postgresql+psycopg2://{dbuser}:{dbpass}@{dbhost}/{dbname}'.format(
+    dbuser=os.environ['DBUSER'],
+    dbpass=os.environ['DBPASS'],
+    dbhost=os.environ['DBHOST'],
+    dbname=os.environ['DBNAME']
+)
+
+app = Flask(__name__)
+app.config.update(
+    SQLALCHEMY_DATABASE_URI=database_uri,
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
 
 # initialize the database connection
-DB = SQLAlchemy(APP)
+db = SQLAlchemy(app)
 
 # initialize database migration management
-MIGRATE = Migrate(APP, DB)
-
-from models import *
+migrate = Migrate(app, db)
 
 
-@APP.route('/')
+@app.route('/')
 def view_registered_guests():
+    from models import Guest
     guests = Guest.query.all()
     return render_template('guest_list.html', guests=guests)
 
 
-@APP.route('/register', methods = ['GET'])
+@app.route('/register', methods=['GET'])
 def view_registration_form():
     return render_template('guest_registration.html')
 
 
-@APP.route('/register', methods = ['POST'])
+@app.route('/register', methods=['POST'])
 def register_guest():
+    from models import Guest
     name = request.form.get('name')
     email = request.form.get('email')
     partysize = request.form.get('partysize')
-    if not partysize or partysize=='':
-        partysize = 1
 
     guest = Guest(name, email, partysize)
-    DB.session.add(guest)
-    DB.session.commit()
+    db.session.add(guest)
+    db.session.commit()
 
-    return render_template('guest_confirmation.html',
-        name=name, email=email, partysize=partysize)
+    return render_template(
+        'guest_confirmation.html', name=name, email=email, partysize=partysize)
