@@ -42,11 +42,10 @@ def register_guest():
     from models import Guest
     name = request.form.get('name')
     email = request.form.get('email')
-    partysize = request.form.get('partysize')
 
-    guest = Guest(name, email, partysize)
+    guest = Guest(name, email)
     db.session.add(guest)
     db.session.commit()
 
     return render_template(
-        'guest_confirmation.html', name=name, email=email, partysize=partysize)
+        'guest_confirmation.html', name=name, email=email)
